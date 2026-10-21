@@ -14,16 +14,18 @@ import ShareButton from "@/components/ShareButton";
 import moment from "moment";
 
 const LOGO_IMG = "/logo.svg";
-// Images externes : vérifier les licences et attributions avant publication.
-const HERO_IMG = "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ab/Palais_Bourbon_Assembl%C3%A9e_nationale.JPG/960px-Palais_Bourbon_Assembl%C3%A9e_nationale.JPG";
-const CAT_IMAGES = {
-  "Environnement": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/06/Champs_et_%C3%A9oliennes_pr%C3%A8s_de_Criel-sur-Mer_%28%C3%A9t%C3%A9_2018%29.JPG/960px-Champs_et_%C3%A9oliennes_pr%C3%A8s_de_Criel-sur-Mer_%28%C3%A9t%C3%A9_2018%29.JPG",
-  "Social": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/67/Manifestation_agriculteurs_Dijon_11-12-2024_%281%29.jpg/960px-Manifestation_agriculteurs_Dijon_11-12-2024_%281%29.jpg",
-  "Éducation": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Amphith%C3%A9%C3%A2tre_de_la_Sorbonne_Nouvelle.jpg/960px-Amphith%C3%A9%C3%A2tre_de_la_Sorbonne_Nouvelle.jpg",
-  "Économie": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/27/Bercy_-_Minist%C3%A8re_de_l%27Economie_et_des_Finances_4.JPG/960px-Bercy_-_Minist%C3%A8re_de_l%27Economie_et_des_Finances_4.JPG",
-  "Sécurité": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/57/V%C3%A9hicules_de_la_police_nationale%2C_Gare_de_l%27Est_-_octobre_2013.JPG/960px-V%C3%A9hicules_de_la_police_nationale%2C_Gare_de_l%27Est_-_octobre_2013.JPG",
-  "Justice": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/96/Cour_de_Cassation_Paris_2012.jpg/960px-Cour_de_Cassation_Paris_2012.jpg",
+const CAT_ART = {
+  Environnement: "from-emerald-950 via-emerald-700 to-teal-500",
+  Social: "from-rose-950 via-rose-700 to-orange-500",
+  Éducation: "from-blue-950 via-blue-700 to-cyan-500",
+  Économie: "from-amber-950 via-amber-700 to-yellow-500",
+  Sécurité: "from-indigo-950 via-indigo-700 to-blue-500",
+  Justice: "from-violet-950 via-violet-700 to-fuchsia-500",
 };
+
+function LawArt({ category }) {
+  return <div aria-hidden="true" className={`flex h-full w-full items-center justify-center bg-gradient-to-br ${CAT_ART[category] || "from-slate-900 via-slate-700 to-slate-500"}`}><Landmark className="h-20 w-20 text-white/30" strokeWidth={1} /></div>;
+}
 
 const themes = [
   { label: "Écologie", cat: "Environnement", icon: Leaf, cls: "from-emerald-400/25 to-emerald-400/5 text-emerald-300" },
@@ -174,7 +176,7 @@ export default function Home() {
             <Link to={`/loi/${featured.id}`} className="block">
               <div className="rounded-3xl border border-border bg-card/70 backdrop-blur-xl overflow-hidden shadow-2xl shadow-black/30 hover:border-primary/50 transition-colors">
                 <div className="relative h-48">
-                  <Image src={CAT_IMAGES[featured.category] || HERO_IMG} alt={featured.title} className="w-full h-full" />
+                  <LawArt category={featured.category} />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
                   <span className="absolute top-3 left-3 rounded-full bg-debate text-slate-900 text-[10px] font-bold uppercase tracking-widest px-3 py-1.5 shadow">
                     Priorité
@@ -323,7 +325,7 @@ export default function Home() {
                   <Link key={law.id} to={`/loi/${law.id}`} className="shrink-0 w-60">
                     <div className="rounded-2xl border border-border bg-card/70 backdrop-blur overflow-hidden hover:border-primary/50 transition-colors h-full">
                       <div className="relative h-28">
-                        <Image src={CAT_IMAGES[law.category] || HERO_IMG} alt={law.title} className="w-full h-full" />
+                        <LawArt category={law.category} />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
                         <span className="absolute top-2 left-2 rounded-full bg-background/80 text-[9px] font-bold uppercase tracking-wider px-2 py-1">
                           {law.category}

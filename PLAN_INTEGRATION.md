@@ -2,6 +2,8 @@
 
 Version du 21 octobre 2026. Source examinée : `truthful-vox-vote-flow.zip`.
 
+**Décision prise le 21 octobre 2026 :** licence MIT et démarrage sans reprise des comptes, votes ou contenus de production Base44. Les choix encore ouverts dans ce plan décrivent la réflexion initiale ; l’état réalisé est tenu dans [docs/AVANCEMENT.md](docs/AVANCEMENT.md).
+
 ## 1. Résultat recherché
 
 Une application indépendante de Base44, installable en local, hébergeable par n’importe qui et publiée avec une licence open source. L’interface et les fonctionnalités existantes sont conservées autant que possible. La version publique dispose d’une base persistante, de sauvegardes et de responsables identifiés.

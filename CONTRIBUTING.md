@@ -1,6 +1,6 @@
 # Contribuer à LA VOIX
 
-La publication et la licence du projet sont en préparation. Le choix de licence doit être explicite avant d’accepter des contributions externes sous cette licence.
+Le projet est publié sous [licence MIT](LICENSE). En proposant du code, vous acceptez sa distribution sous cette licence ; vous conservez vos droits d’auteur sur votre contribution.
 
 1. Décrire le problème ou l’amélioration dans une issue.
 2. Créer une branche courte (`codex/…` pour les travaux assistés par Codex).

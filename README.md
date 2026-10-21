@@ -2,7 +2,7 @@
 
 Application de consultation citoyenne : consulter des lois, voter, proposer et soutenir des réformes, comparer les prises de position. Interface React et API TypeScript avec PostgreSQL et Better Auth. Le fonctionnement local ne nécessite aucun compte Base44.
 
-**État : version locale en cours de migration.** Le jeu fourni est fictif. Les données et comptes historiques ne sont pas inclus. La publication open source attend le choix explicite de la licence ; aucun droit supplémentaire de redistribution du projet n’est accordé tant que `LICENSE` n’a pas été ajouté. Voir [l’avancement](docs/AVANCEMENT.md).
+**État : version locale indépendante de Base44, sous licence MIT.** Le jeu fourni est fictif. Le nouveau projet repart volontairement de zéro : aucun compte, vote ou autre contenu de production de l’ancienne application n’est repris. Chacun peut utiliser, modifier et redistribuer le code en conservant la notice de licence. Voir [l’avancement](docs/AVANCEMENT.md).
 
 ## Démarrage sur son ordinateur
 
@@ -62,4 +62,4 @@ La connexion Google est optionnelle : définir `GOOGLE_CLIENT_ID` et `GOOGLE_CLI
 
 ## Participer
 
-Les conventions et la gouvernance proposée figurent dans [CONTRIBUTING.md](CONTRIBUTING.md) et [GOVERNANCE.md](GOVERNANCE.md). Le dépôt ne contient aucun historique de production, aucune clé de service et aucune sauvegarde. Avant de publier : choisir la licence, terminer la vérification des droits des ressources et attribuer les responsabilités d’exploitation.
+Les conventions et la gouvernance proposée figurent dans [CONTRIBUTING.md](CONTRIBUTING.md) et [GOVERNANCE.md](GOVERNANCE.md). Le dépôt ne contient aucun historique de production, aucune clé de service et aucune sauvegarde. Le code est distribué sous [licence MIT](LICENSE). L’hébergement d’une instance publique exige encore un exploitant, une base persistante, HTTPS, SMTP et une politique sur les données personnelles.

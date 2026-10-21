@@ -11,16 +11,14 @@
 - Interface vérifiée en local pour inscription, confirmation, vote, modification du vote, création de réforme, soutien et publication d’un avis fictif.
 - README, documentation d’exploitation, guide de contribution, proposition de gouvernance et CI préparés.
 
-Les tests d’intégration utilisent une base et des comptes fictifs. La base locale contient aussi un compte et des participations fictifs créés pendant la vérification navigateur ; rien de cela n’est suivi dans Git.
+Les tests d’intégration utilisent une base et des comptes fictifs. La base locale contient aussi un compte et des participations fictifs créés pendant la vérification navigateur ; rien de cela n’est suivi dans Git. Le choix du 21 octobre est la licence MIT et un démarrage public sans reprise des comptes ni votes historiques.
 
-## Reste à faire avant la publication et la bascule
+## Reste à faire avant l’ouverture d’une instance publique
 
-1. **Décider de la licence** : MIT pour une réutilisation très libre, ou AGPL-3.0 pour imposer l’accès au code des versions modifiées proposées en ligne. Ajouter le fichier `LICENSE` et vérifier les droits de redistribution du code exporté et des ressources tierces.
-2. **Exporter les données Base44**, si leur conservation est souhaitée. Le ZIP contient les schémas, sans comptes, lois, votes ni médias de production. Écrire et tester l’import historique à partir du format réel des exports, y compris la correspondance des auteurs et des liens. Aucun mot de passe ni accès Google n’est supposé transférable.
-3. **Clarifier les rappels Google Calendar** : l’ancien code utilise un calendrier connecté par le rôle de service. Déterminer si le nouveau calendrier doit être collectif ou propre à chaque membre, puis implémenter et tester l’option retenue.
-4. **Préparer l’exploitation publique** : domaine, hébergement, SMTP, sauvegardes programmées, responsabilités, modération, suppression de compte et informations sur les données personnelles. Le Compose local fourni n’a pas été exécuté ici, faute de Docker sur cette machine.
-5. **Terminer la vérification des médias et contenus** : pages Wikimedia, licences, attributions ; éviter de publier des textes ou photographies sans droit confirmé. Le logo original hébergé chez Base44 a été remplacé par un SVG local provisoire.
-6. **Valider la version publique** : tests sur préproduction avec HTTPS, courriels réels, installation depuis un clone vierge, restauration d’une sauvegarde, rapprochement des données importées, puis bascule contrôlée.
-7. **Créer le dépôt GitHub public** dans le compte ou l’organisation retenue, configurer les responsables, règles de contribution et signalement privé de sécurité. Aucun dépôt distant n’est configuré dans cette copie locale.
+1. **Clarifier les rappels Google Calendar** : l’ancien code utilise un calendrier connecté par le rôle de service. Déterminer si le nouveau calendrier doit être collectif ou propre à chaque membre, puis implémenter et tester l’option retenue.
+2. **Préparer l’exploitation publique** : domaine, hébergement, SMTP, sauvegardes programmées, responsabilités, modération, suppression de compte et informations sur les données personnelles. Le Compose local fourni n’a pas été exécuté ici, faute de Docker sur cette machine.
+3. **Contrôler les futurs médias et contenus** : éviter de publier des textes ou photographies sans droit confirmé. Le logo original hébergé chez Base44 et les photos non vérifiées ont été remplacés par des ressources locales.
+4. **Valider la version publique** : tests sur préproduction avec HTTPS, courriels réels, installation depuis un clone vierge et restauration d’une sauvegarde. Aucune donnée historique ne sera importée.
+5. **Créer le dépôt GitHub public** et configurer les responsables, règles de contribution et signalement privé de sécurité.
 
-Ce document reflète l’état vérifié à la date indiquée. Le `PLAN_INTEGRATION.md` décrit les objectifs et critères plus larges ; les points ci-dessus empêchent de présenter la migration et l’ouverture publique comme terminées.
+Ce document reflète l’état vérifié à la date indiquée. Le `PLAN_INTEGRATION.md` conserve les options historiques ; les points ci-dessus empêchent de présenter l’hébergement public comme terminé.
