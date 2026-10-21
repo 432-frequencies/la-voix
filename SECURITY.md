@@ -1,6 +1,6 @@
 # Signaler un problème de sécurité
 
-Avant publication, configurer un canal de signalement privé et indiquer les versions prises en charge. Le dépôt n’a pas encore de contact public défini.
+Le dépôt est public. Un canal privé de signalement et les versions prises en charge restent à configurer avant le lancement d’une instance de production ; le projet ne dispose pas encore de contact de sécurité dédié.
 
 Ne pas publier de secrets, données individuelles ou liens de récupération dans une issue publique. Préférer le signalement privé de GitHub une fois activé.
 
