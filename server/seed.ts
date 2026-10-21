@@ -2,7 +2,7 @@ import { pool, transaction } from "./db.ts";
 import { lawSchema } from "./domain.ts";
 export async function seed() {
   // Never overwrite existing content or insert demonstration users with usable passwords.
-  const future = new Date(Date.now() + 14 * 86400000)
+  const future = new Date(Date.now() + 45 * 86400000)
     .toISOString()
     .slice(0, 10);
   const law = lawSchema.parse({

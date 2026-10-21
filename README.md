@@ -58,6 +58,8 @@ Compose démarre avec une base vide et une boîte SMTP de développement. Il exp
 
 Voir [EXPLOITATION.md](docs/EXPLOITATION.md). Utiliser une base PostgreSQL gérée ou administrée, HTTPS et un service SMTP. Définir `NODE_ENV=production`, `APP_URL=https://votre-domaine`, `DATABASE_URL` et `BETTER_AUTH_SECRET`. Les migrations sont une étape préalable au démarrage, pas une opération exécutée à chaque requête.
 
+Un [Blueprint Render d’essai](docs/DEPLOIEMENT_RENDER.md) prépare un service web gratuit et une base PostgreSQL gratuite de 30 jours. Il nécessite un compte Render et un relais de courriel configuré ; le site n’est en ligne qu’une fois ces ressources créées et vérifiées.
+
 La connexion Google est optionnelle : définir `GOOGLE_CLIENT_ID` et `GOOGLE_CLIENT_SECRET`, et enregistrer le callback `APP_URL/api/auth/callback/google`. Elle n’a pas été testée avec un fournisseur réel. Les rappels Google Calendar de l’ancienne application ne sont pas encore migrés.
 
 ## Participer

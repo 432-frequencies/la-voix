@@ -1,7 +1,7 @@
 import nodemailer from "nodemailer";
 import { mkdir, writeFile, readdir, readFile } from "node:fs/promises";
 import { randomUUID } from "node:crypto";
-import { localMail } from "./config.ts";
+import { localMail, production } from "./config.ts";
 const directory = process.env.MAIL_DIR || ".local/mail";
 export async function sendMail(to: string, subject: string, url: string) {
   if (localMail) {
@@ -18,6 +18,7 @@ export async function sendMail(to: string, subject: string, url: string) {
     host: process.env.SMTP_HOST,
     port: Number(process.env.SMTP_PORT || 587),
     secure: process.env.SMTP_SECURE === "true",
+    requireTLS: production && process.env.SMTP_SECURE !== "true",
     auth: process.env.SMTP_USER
       ? { user: process.env.SMTP_USER, pass: process.env.SMTP_PASSWORD }
       : undefined,
