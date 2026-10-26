@@ -72,7 +72,7 @@ export default function Reforms() {
   const enDebat = feed.reforms.filter((r) => r.status === "en_debat").length;
 
   return (
-    <div className="dark min-h-screen bg-background text-foreground relative overflow-hidden pt-[env(safe-area-inset-top)]">
+    <div className="dark min-h-screen bg-background text-foreground relative overflow-hidden">
       <div className="pointer-events-none absolute -top-32 -left-24 w-80 h-80 rounded-full bg-vote/20 blur-3xl" />
       <header className="relative z-30 max-w-2xl mx-auto px-4 pt-5 pb-3 flex items-center gap-3">
         <button onClick={() => navigate("/")} className="p-2 -ml-2 rounded-lg hover:bg-muted">

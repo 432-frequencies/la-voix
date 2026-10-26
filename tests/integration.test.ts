@@ -14,6 +14,7 @@ process.env.NODE_ENV = "test";
 process.env.APP_URL = `http://localhost:${httpPort}`;
 process.env.DATABASE_URL = `postgresql://tester:${password}@127.0.0.1:${port}/lavoix_test`;
 process.env.BETTER_AUTH_SECRET = randomBytes(48).toString("hex");
+process.env.IOS_APP_ORIGIN = "capacitor://localhost";
 process.env.MAIL_DIR = path.join(directory, "mail");
 delete process.env.SMTP_HOST;
 const origin = process.env.APP_URL;
@@ -122,6 +123,29 @@ after(async () => {
   await rm(directory, { recursive: true, force: true });
 });
 test("lecture publique, origine refusée et écritures anonymes interdites", async () => {
+  const preflight = await fetch(origin + "/api/entities/Law/query", {
+    method: "OPTIONS",
+    headers: {
+      Origin: "capacitor://localhost",
+      "Access-Control-Request-Method": "POST",
+      "Access-Control-Request-Headers": "content-type",
+    },
+  });
+  assert.equal(preflight.status, 204);
+  assert.equal(preflight.headers.get("access-control-allow-origin"), "capacitor://localhost");
+  assert.equal(preflight.headers.get("access-control-allow-credentials"), "true");
+  const rejectedPreflight = await fetch(origin + "/api/entities/Law/query", {
+    method: "OPTIONS",
+    headers: { Origin: "https://evil.invalid", "Access-Control-Request-Method": "POST" },
+  });
+  assert.equal(rejectedPreflight.headers.get("access-control-allow-origin"), null);
+  const nativeGuest = await guest.call(
+    "/api/actions/CastVote",
+    { law_id: "demo-bibliotheques", choice: "pour" },
+    "POST",
+    "capacitor://localhost",
+  );
+  assert.equal(nativeGuest.status, 401);
   assert.equal(
     (await guest.call("/api/entities/Law/demo-bibliotheques")).status,
     200,
@@ -164,6 +188,37 @@ test("inscription avec confirmation, rôle non modifiable et connexion", async (
   aId = await register(a, "alice@example.test");
   bId = await register(b, "bob@example.test");
   assert.notEqual(aId, bId);
+});
+test("session iPhone par jeton signé, vote et déconnexion", async () => {
+  const mobileOrigin = "capacitor://localhost";
+  const signIn = await fetch(origin + "/api/auth/sign-in/email", {
+    method: "POST",
+    headers: { Origin: mobileOrigin, "Content-Type": "application/json" },
+    body: JSON.stringify({
+      email: "alice@example.test",
+      password: "Mot-de-passe-test-2026!",
+    }),
+  });
+  assert.equal(signIn.status, 200);
+  const token = signIn.headers.get("set-auth-token");
+  assert.ok(token);
+  assert.equal(signIn.headers.get("access-control-expose-headers"), "set-auth-token");
+  const headers = { Origin: mobileOrigin, Authorization: `Bearer ${token}` };
+  const me = await fetch(origin + "/api/me", { headers });
+  assert.equal((await me.json()).id, aId);
+  const vote = await fetch(origin + "/api/actions/CastVote", {
+    method: "POST",
+    headers: { ...headers, "Content-Type": "application/json" },
+    body: JSON.stringify({ law_id: "demo-bibliotheques", choice: "pour" }),
+  });
+  assert.equal(vote.status, 200);
+  const signOut = await fetch(origin + "/api/auth/sign-out", {
+    method: "POST",
+    headers,
+  });
+  assert.equal(signOut.status, 200);
+  const after = await fetch(origin + "/api/me", { headers });
+  assert.equal(await after.json(), null);
 });
 test("vote atomique, modification, résultats et isolation des comptes", async () => {
   const results = await Promise.all(

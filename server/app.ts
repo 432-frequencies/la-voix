@@ -21,6 +21,7 @@ import {
 import { opinionMap } from "./opinion.ts";
 import path from "node:path";
 export const app = express();
+const iosOrigin = process.env.IOS_APP_ORIGIN;
 app.disable("x-powered-by");
 // Only configure proxy trust when the deployment actually has that many trusted hops.
 if (process.env.TRUST_PROXY_HOPS)
@@ -36,9 +37,22 @@ app.use("/api", (_req, res, next) => {
   next();
 });
 app.use("/api", (req, res, next) => {
+  if (iosOrigin && req.headers.origin === iosOrigin) {
+    res.setHeader("Access-Control-Allow-Origin", iosOrigin);
+    res.setHeader("Access-Control-Allow-Credentials", "true");
+    res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+    res.setHeader("Access-Control-Expose-Headers", "set-auth-token");
+    res.setHeader("Access-Control-Allow-Methods", "GET, POST, PATCH, OPTIONS");
+    res.vary("Origin");
+    if (req.method === "OPTIONS") return res.sendStatus(204);
+  }
+  next();
+});
+app.use("/api", (req, res, next) => {
   if (
     !["GET", "HEAD", "OPTIONS"].includes(req.method) &&
-    req.headers.origin !== new URL(appURL).origin
+    req.headers.origin !== new URL(appURL).origin &&
+    req.headers.origin !== iosOrigin
   )
     return res.status(403).json({ error: "Origine de la requête refusée." });
   next();

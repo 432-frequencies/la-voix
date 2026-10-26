@@ -8,6 +8,7 @@ import { Label } from "@/components/ui/label";
 import { request } from "@/api/client";
 import { useAuth } from "@/lib/AuthContext";
 import { safeReturnTo } from "@/lib/authReturnTo";
+import { isNativeApp } from "@/lib/runtime";
 export default function Account({ mode = "login" }) {
   const [email, setEmail] = useState(""),
     [password, setPassword] = useState(""),
@@ -176,7 +177,7 @@ export default function Account({ mode = "login" }) {
           Déjà un compte ? Se connecter
         </Link>
       )}
-      {config.google && ["login", "register"].includes(mode) && (
+      {config.google && !isNativeApp && ["login", "register"].includes(mode) && (
         <Button
           variant="outline"
           className="mt-4 w-full"
