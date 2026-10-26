@@ -60,7 +60,7 @@ Voir [EXPLOITATION.md](docs/EXPLOITATION.md). Utiliser une base PostgreSQL gér�
 
 Un [Blueprint Render d’essai](docs/DEPLOIEMENT_RENDER.md) prépare un service web gratuit et une base PostgreSQL gratuite de 30 jours. Il nécessite un compte Render et un relais de courriel configuré ; le site n’est en ligne qu’une fois ces ressources créées et vérifiées.
 
-Pour une publication iPhone, voir le [plan App Store](docs/APP_STORE.md). La création du service Render est volontairement reportée à la phase finale afin de conserver les 30 jours gratuits pour les essais proches du lancement.
+Pour une publication iPhone, voir le [plan App Store](docs/APP_STORE.md) et le [plan d’intégration iOS](docs/PLAN_INTEGRATION_IOS.md). La création du service Render est volontairement reportée à la phase finale afin de conserver les 30 jours gratuits pour les essais proches du lancement.
 
 La connexion Google est optionnelle : définir `GOOGLE_CLIENT_ID` et `GOOGLE_CLIENT_SECRET`, et enregistrer le callback `APP_URL/api/auth/callback/google`. Elle n’a pas été testée avec un fournisseur réel. Les rappels Google Calendar de l’ancienne application ne sont pas encore migrés.
 

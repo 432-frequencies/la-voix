@@ -10,6 +10,8 @@
 
 ## 2. Construire la version iPhone hors ligne et en local
 
+Le [plan d’intégration iOS détaillé](PLAN_INTEGRATION_IOS.md) décrit les lots, le chemin critique de l’authentification, les tests sur iPhone et les critères de passage de cette étape.
+
 - Ajouter un projet iOS à partir de l’interface existante, par exemple avec Capacitor, puis adapter navigation, taille des écrans, clavier, liens profonds et accessibilité. Tester sur de vrais iPhone. Ajouter une valeur propre à l’app mobile (par exemple lecture hors ligne, partage natif ou notifications pertinentes) : Apple peut refuser un simple site emballé dans une WebView. Source : [App Review, règle 4.2](https://developer.apple.com/app-store/review/guidelines/).
 - Ajouter dans l’application la suppression du compte et des données associées, avec confirmation claire. Apple l’exige pour les applications qui permettent de créer un compte. Source : [suppression du compte](https://developer.apple.com/help/app-review/guideline-reference/5-1-1-account-deletion/).
 - Ajouter filtrage des contenus, signalement, blocage et traitement de la modération des réformes/avis publiés par les membres, ainsi qu’un contact public. Source : [App Review, règle 1.2](https://developer.apple.com/app-store/review/guidelines/).
