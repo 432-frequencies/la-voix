@@ -1,5 +1,7 @@
 # Essai public sur Render (base gratuite de 30 jours)
 
+**Ne pas lancer ce Blueprint avant la phase finale de l’essai ou de TestFlight.** Le délai de 30 jours démarre à la création de la base. Voir le [chemin vers l’App Store](APP_STORE.md).
+
 Le fichier [`render.yaml`](../render.yaml) décrit un service web Node et une base PostgreSQL, tous deux sur l’offre gratuite de Render, dans la région de Francfort. La base est neuve : aucun compte ni vote de Base44 n’est repris. Les migrations sont exécutées au démarrage. Le site d’essai reçoit une loi explicitement fictive, signalée `[Démo]`, pour permettre de vérifier le parcours de vote ; aucun compte n’est précréé.
 
 ## Mise en ligne
