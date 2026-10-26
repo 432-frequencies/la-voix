@@ -1,4 +1,7 @@
 import React, { useState } from "react";
+import { Share } from "@capacitor/share";
+import { isNativeApp, publicPageUrl } from "@/lib/runtime";
+import { openExternalUrl } from "@/lib/external";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Share2, Link as LinkIcon, Check, MessageCircle, Facebook, Mail, Twitter } from "lucide-react";
 
@@ -8,13 +11,16 @@ export default function ShareButton({ path, title, vote, className = "" }) {
   const [open, setOpen] = useState(false);
   const [copied, setCopied] = useState(false);
 
-  const fullUrl = `${window.location.origin}${path}${vote ? `?partage=${vote}` : ""}`;
+  const fullUrl = publicPageUrl(`${path}${vote ? `?partage=${vote}` : ""}`);
   const message = vote
     ? `J'ai voté « ${CHOICE_LABELS[vote]} » sur LA VOIX. Et toi ? ${fullUrl}`
     : `Découvre ce texte et donne ton avis sur LA VOIX : ${fullUrl}`;
 
   const stop = (e) => { e.preventDefault(); e.stopPropagation(); };
-  const openExternal = (href) => window.open(href, "_blank", "noopener,noreferrer");
+  const openExternal = (href) => {
+    if (href.startsWith("mailto:")) window.location.href = href;
+    else openExternalUrl(href);
+  };
   const copy = async () => {
     try {
       await navigator.clipboard.writeText(message);
@@ -32,6 +38,15 @@ export default function ShareButton({ path, title, vote, className = "" }) {
 
   const onTrigger = async (e) => {
     stop(e);
+    if (!fullUrl) return;
+    if (isNativeApp) {
+      try {
+        await Share.share({ title, text: message, url: fullUrl });
+        return;
+      } catch (err) {
+        if (err?.message?.includes("cancel")) return;
+      }
+    }
     if (navigator.share) {
       try {
         await navigator.share({ title, text: message, url: fullUrl });
@@ -51,6 +66,7 @@ export default function ShareButton({ path, title, vote, className = "" }) {
           onClick={onTrigger}
           title="Partager ce texte"
           aria-label="Partager ce texte"
+          disabled={!fullUrl}
           className={
             className ||
             "p-2.5 rounded-full border border-border bg-card/60 text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"

@@ -1,6 +1,8 @@
 import React from "react";
 import { Badge } from "@/components/ui/badge";
 import { ExternalLink, User } from "lucide-react";
+import { isNativeApp } from "@/lib/runtime";
+import { openExternalUrl } from "@/lib/external";
 
 const orientationConfig = {
   "gauche": { label: "Gauche", color: "bg-rose-100 text-rose-700 border-rose-200", bar: "bg-rose-500" },
@@ -19,6 +21,12 @@ export default function ArticleCard({ article }) {
       href={article.url}
       target="_blank"
       rel="noopener noreferrer"
+      onClick={(event) => {
+        if (isNativeApp) {
+          event.preventDefault();
+          openExternalUrl(article.url);
+        }
+      }}
       className="block group"
     >
       <div className="relative pl-4 py-3 border-l-2 border-transparent hover:border-foreground/20 transition-all">

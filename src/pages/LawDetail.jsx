@@ -8,10 +8,12 @@ import VotePanel from "@/components/VotePanel";
 import HemicycleChart from "@/components/HemicycleChart";
 import AssemblySideBreakdown from "@/components/AssemblySideBreakdown";
 import ShareButton, { CHOICE_LABELS } from "@/components/ShareButton";
+import { isNativeApp } from "@/lib/runtime";
+import { savedLaw, saveLaw, removeSavedLaw } from "@/lib/offline-laws";
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
 import {
   ArrowLeft, Calendar, Landmark, Vote, Check, MinusCircle,
-  Users, FileText, Loader2, BarChart3, ThumbsUp, TriangleAlert, MessageCircle
+  Users, FileText, Loader2, BarChart3, ThumbsUp, TriangleAlert, MessageCircle, Bookmark
 } from "lucide-react";
 import moment from "moment";
 
@@ -41,6 +43,9 @@ export default function LawDetail() {
   const [results, setResults] = useState({ total: 0, pour: 0, contre: 0, abstention: 0 });
   const [myVote, setMyVote] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [offline, setOffline] = useState(false);
+  const [saved, setSaved] = useState(false);
+  const [cacheError, setCacheError] = useState("");
   const [activeTab, setActiveTab] = useState("resultats");
   const [readLevel, setReadLevel] = useState("30 sec");
   const [sharedChoice] = useState(() => {
@@ -52,6 +57,9 @@ export default function LawDetail() {
     (async () => {
       if (!id) return;
       setLoading(true);
+      setLaw(null);
+      setOffline(false);
+      setSaved(!!savedLaw(id));
       try {
         const lawData = await api.entities.Law.get(id);
         setLaw(lawData);
@@ -63,6 +71,10 @@ export default function LawDetail() {
         setMyVote(myVotePage.items?.[0] || null);
       } catch (e) {
         console.error(e);
+        setOffline(true);
+        setActiveTab("comprendre");
+        const cached = savedLaw(id);
+        setLaw(cached);
       } finally {
         setLoading(false);
       }
@@ -80,13 +92,23 @@ export default function LawDetail() {
   if (!law) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center gap-3">
-        <p className="text-muted-foreground">Loi introuvable.</p>
+        <p className="text-muted-foreground">{offline ? "Texte indisponible sans connexion. Enregistrez-le d’abord depuis la fiche en ligne." : "Loi introuvable."}</p>
         <Link to="/" className="text-primary font-semibold underline">Retour à l'accueil</Link>
       </div>
     );
   }
 
   const isVoted = law.assembly_result !== "non_voté";
+  const toggleSaved = () => {
+    try {
+      if (saved) removeSavedLaw(id);
+      else saveLaw(law);
+      setSaved(!saved);
+      setCacheError("");
+    } catch {
+      setCacheError("Impossible de sauvegarder ce texte sur cet appareil.");
+    }
+  };
 
   const total = results.total;
   const pourPct = total ? (results.pour / total) * 100 : 0;
@@ -113,11 +135,14 @@ export default function LawDetail() {
             <ArrowLeft className="w-5 h-5" />
           </button>
           <h1 className="font-display font-bold text-sm uppercase tracking-wide flex-1">Comprendre la loi</h1>
+          {isNativeApp && <button onClick={toggleSaved} aria-label={saved ? "Retirer des textes sauvegardés" : "Sauvegarder pour lire hors ligne"} title={saved ? "Retirer la copie" : "Lire hors ligne"} className="p-2 rounded-lg hover:bg-muted"><Bookmark className={`w-5 h-5 ${saved ? "fill-current text-primary" : ""}`} /></button>}
           <ShareButton path={`/loi/${id}`} title={law?.title} vote={myVote?.choice} />
         </div>
       </header>
 
       <main className="max-w-2xl mx-auto px-4 py-5">
+        {offline && <p role="status" className="rounded-xl border border-debate/40 bg-debate/10 p-3 text-sm mb-4">Connexion indisponible : copie du {new Date(law.saved_at).toLocaleDateString("fr-FR")}. Résultats et vote non accessibles.{law.truncated ? " Le texte dépasse la limite de stockage local et cette copie est abrégée." : ""}</p>}
+        {cacheError && <p role="alert" className="text-destructive text-sm mb-4">{cacheError}</p>}
         {/* En-tête du texte */}
         <div className="flex flex-wrap items-center gap-2 mb-3">
           <Badge className={`${categoryColors[law.category] || categoryColors["Autre"]} border-0 font-semibold`}>{law.category}</Badge>
@@ -148,7 +173,7 @@ export default function LawDetail() {
             { key: "resultats", label: "Résultats", icon: BarChart3 },
             { key: "comprendre", label: "Comprendre", icon: FileText },
             { key: "vote", label: "Mon vote", icon: Vote },
-          ].filter((t) => !(t.key === "vote" && isVoted)).map((t) => (
+          ].filter((t) => !offline ? !(t.key === "vote" && isVoted) : t.key === "comprendre").map((t) => (
             <button
               key={t.key}
               onClick={() => setActiveTab(t.key)}
@@ -241,7 +266,7 @@ export default function LawDetail() {
             )}
 
             {articles.length > 0 && <Card className="p-5 rounded-2xl"><h3 className="font-bold mb-3">Articles et sources</h3>{articles.map(article => <ArticleCard key={article.id} article={article} />)}</Card>}
-            {isVoted ? (
+            {offline ? null : isVoted ? (
               <Card className="p-4 rounded-2xl border-primary/20 bg-primary/5 flex items-start gap-3">
                 <Landmark className="w-5 h-5 text-primary shrink-0 mt-0.5" />
                 <div>
@@ -268,7 +293,7 @@ export default function LawDetail() {
         )}
 
         {/* Mon vote */}
-        {activeTab === "vote" && (
+        {activeTab === "vote" && !offline && (
           <VotePanel
             lawId={id}
             myVote={myVote}

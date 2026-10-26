@@ -62,6 +62,8 @@ Un [Blueprint Render d’essai](docs/DEPLOIEMENT_RENDER.md) prépare un service 
 
 Pour une publication iPhone, voir le [plan App Store](docs/APP_STORE.md) et le [plan d’intégration iOS](docs/PLAN_INTEGRATION_IOS.md). La création du service Render est volontairement reportée à la phase finale afin de conserver les 30 jours gratuits pour les essais proches du lancement.
 
+Le [guide de développement iOS](docs/IOS_DEVELOPMENT.md) décrit la compilation Xcode, la configuration HTTPS de l’API et les essais sans Render. Le projet iOS utilise une valeur temporaire pour l’identifiant d’application, à remplacer avant la signature de distribution.
+
 La connexion Google est optionnelle : définir `GOOGLE_CLIENT_ID` et `GOOGLE_CLIENT_SECRET`, et enregistrer le callback `APP_URL/api/auth/callback/google`. Elle n’a pas été testée avec un fournisseur réel. Les rappels Google Calendar de l’ancienne application ne sont pas encore migrés.
 
 ## Participer

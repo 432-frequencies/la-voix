@@ -1,4 +1,5 @@
 import type { BetterAuthOptions } from "better-auth";
+import { bearer } from "better-auth/plugins";
 import { pool } from "./db.ts";
 import { appURL, production } from "./config.ts";
 import { sendMail } from "./mail.ts";
@@ -7,7 +8,10 @@ export const authOptions = {
   baseURL: appURL,
   secret: process.env.BETTER_AUTH_SECRET,
   database: pool,
-  trustedOrigins: [appURL],
+  plugins: [bearer({ requireSignature: true })],
+  trustedOrigins: [appURL, process.env.IOS_APP_ORIGIN].filter(
+    (origin): origin is string => Boolean(origin),
+  ),
   user: {
     additionalFields: {
       role: { type: "string", defaultValue: "user", input: false },

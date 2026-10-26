@@ -155,7 +155,7 @@ export default function ReformDetail() {
   const progress = Math.min(100, (supports / THRESHOLD) * 100);
 
   return (
-    <div className="dark min-h-screen bg-background text-foreground relative overflow-hidden pt-[env(safe-area-inset-top)]">
+    <div className="dark min-h-screen bg-background text-foreground relative overflow-hidden">
       <div className="pointer-events-none absolute -top-32 -right-24 w-80 h-80 rounded-full bg-vote/15 blur-3xl" />
       <header className="relative z-30 sticky top-0 bg-background/90 backdrop-blur-xl border-b border-border">
         <div className="max-w-2xl mx-auto px-4 py-3 flex items-center gap-3">

@@ -132,7 +132,7 @@ export default function Home() {
   };
 
   return (
-    <div className="dark min-h-screen bg-background text-foreground relative overflow-hidden pt-[env(safe-area-inset-top)]">
+    <div className="dark min-h-screen bg-background text-foreground relative overflow-hidden">
       {/* Halos décoratifs */}
       <div className="pointer-events-none absolute -top-32 -right-24 w-96 h-96 rounded-full bg-primary/25 blur-3xl" />
       <div className="pointer-events-none absolute top-1/3 -left-24 w-72 h-72 rounded-full bg-debate/15 blur-3xl" />

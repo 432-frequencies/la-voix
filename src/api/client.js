@@ -1,14 +1,32 @@
+import { apiOrigin, isNativeApp } from "@/lib/runtime";
+import {
+  nativeSessionToken,
+  saveNativeSession,
+  clearNativeSession,
+} from "@/lib/native-session";
+
 export async function request(
   path,
   body,
   method = body === undefined ? "GET" : "POST",
 ) {
-  const response = await fetch(`/api${path}`, {
+  if (isNativeApp && !apiOrigin)
+    throw new Error("Adresse de l’API iPhone non configurée.");
+  const token = await nativeSessionToken();
+  const response = await fetch(`${apiOrigin}/api${path}`, {
     method,
-    credentials: "same-origin",
-    headers: body === undefined ? {} : { "Content-Type": "application/json" },
+    credentials: isNativeApp ? "omit" : "same-origin",
+    headers: {
+      ...(body === undefined ? {} : { "Content-Type": "application/json" }),
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
+    },
     body: body === undefined ? undefined : JSON.stringify(body),
   });
+  if (isNativeApp && response.ok) {
+    const issuedToken = response.headers.get("set-auth-token");
+    if (issuedToken) await saveNativeSession(issuedToken);
+    if (path === "/auth/sign-out") await clearNativeSession();
+  }
   const raw = await response.text();
   let data;
   try {
